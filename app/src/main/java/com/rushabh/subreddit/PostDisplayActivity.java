@@ -36,17 +36,28 @@ public class PostDisplayActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Bundle bundle=getIntent().getExtras();
+        Bundle bundle;
+        if(savedInstanceState!=null){
+            bundle=savedInstanceState;
+        }
+        else{
+            bundle=getIntent().getExtras();
+        }
         if(bundle!=null){
             listOfPosts= (ArrayList<Children>) bundle.getSerializable(POSTS_DATA);
             topic=bundle.getString(TOPIC);
         }
 
-        Log.d("beta"," "+listOfPosts.size());
         adapter=new PostDetailsAdapter(listOfPosts,this);
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(POSTS_DATA,listOfPosts);
+        outState.putString(TOPIC,topic);
+    }
 
     public static Intent getDetailIntent(ArrayList<Children> list, String topic, Context context){
 

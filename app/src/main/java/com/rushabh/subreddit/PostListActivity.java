@@ -3,6 +3,7 @@ package com.rushabh.subreddit;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +42,14 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
         ButterKnife.bind(this);
 
         fetcher = new SubredditFetcher(this, this);
-        Bundle bundle = getIntent().getExtras();
+
+        Bundle bundle;
+
+        if (savedInstanceState != null) {
+            bundle = savedInstanceState;
+        } else {
+            bundle = getIntent().getExtras();
+        }
 
         if (bundle != null) {
             listOfPosts = (ArrayList<Children>) bundle.getSerializable(LIST_OF_POSTS);
@@ -71,9 +79,12 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
         }
+
+        outState.putSerializable(LIST_OF_POSTS, listOfPosts);
+        outState.putString(TOPIC, topic);
 
 
     }
@@ -81,7 +92,7 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     @Override
     public void commentsFetched(ArrayList<Children> comments, Children post) {
         post.post.isMainPost = true;
-        if(dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
         }
 
@@ -99,6 +110,6 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     public void onClick(View view) {
         PostViewHolder holder = (PostViewHolder) view.getTag();
         fetcher.fetchSubredditComments(topic, holder.id);
-        dialog=ProgressDialog.show(this,"","Fetching ....");
+        dialog = ProgressDialog.show(this, "", "Fetching ....");
     }
 }
