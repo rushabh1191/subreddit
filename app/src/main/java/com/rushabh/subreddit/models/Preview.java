@@ -12,5 +12,5 @@ import java.util.ArrayList;
 public class Preview implements Serializable{
 
     @SerializedName("images")
-    ArrayList<ImagesInformation> imagesInformations;
+    public ArrayList<ImageObject> imagesInformations;
 }

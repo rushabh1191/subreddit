@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class ImageObject implements Serializable{
 
     @SerializedName("source")
-    ImageObject imageObject;
+    public ImagesInformation source;
 
     @SerializedName("resolutions")
-    ArrayList<ImageObject> imageObjects;
+    ArrayList<ImagesInformation> imageObjects;
 
     @SerializedName("id")
     String id;

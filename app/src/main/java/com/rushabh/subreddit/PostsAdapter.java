@@ -2,6 +2,8 @@ package com.rushabh.subreddit;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +55,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostViewHolder> {
         holder.tvPostTitle.setText(post.title);
         holder.id=post.id;
         holder.tvTime.setText(Utility.getTime(post.createdAt*1000));
-        Picasso.with(context).load(post.thumbnail).into(holder.ivThumbImage);
+        if(!TextUtils.isEmpty(post.thumbnail)){
+            Picasso.with(context).load(post.thumbnail).into(holder.ivThumbImage);
+        }
+        else{
+            holder.ivThumbImage.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
     public int getItemCount() {
+
         if (listOfPosts == null) {
             return 0;
         }

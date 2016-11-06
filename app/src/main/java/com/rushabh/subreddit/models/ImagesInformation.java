@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class ImagesInformation implements Serializable {
 
     @SerializedName("url")
-    String url;
+    public String url;
     @SerializedName("width")
     int width;
     @SerializedName("height")
