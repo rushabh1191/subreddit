@@ -1,5 +1,6 @@
 package com.rushabh.subreddit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
 
     SubredditFetcher fetcher;
 
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
     }
 
     void performSearch(String topic){
+        progressDialog=ProgressDialog.show(this,"","Fetching...");
         fetcher.fetchSubreddit(topic);
     }
 
 
     @Override
     public void postFetched(ArrayList<Children> subredditPosts) {
+        progressDialog.dismiss();
         Intent intent=PostListActivity.getListIntent(subredditPosts,this);
         startActivity(intent);
     }
@@ -56,6 +60,6 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
 
     @Override
     public void failed() {
-
+        progressDialog.dismiss();
     }
 }
