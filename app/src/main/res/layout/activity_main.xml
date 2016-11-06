@@ -14,13 +14,16 @@
         android:id="@+id/et_search"
         android:hint="Search Subreddit"
         android:maxLines="1"
+        android:singleLine="true"
         android:imeActionLabel="Search"
+        android:layout_margin="10dp"
         android:imeOptions="actionSearch"
         android:layout_height="wrap_content" />
 
     <Button
+
         android:layout_width="match_parent"
         android:text="Search"
         android:layout_height="wrap_content"
-        android:id="@+id/button" />
+        android:id="@+id/btn_search" />
 </LinearLayout>

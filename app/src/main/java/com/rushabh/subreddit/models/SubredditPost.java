@@ -11,27 +11,27 @@ import java.io.Serializable;
 public class SubredditPost implements Serializable {
 
     @SerializedName("id")
-    String id;
+    public String id;
     @SerializedName("domain")
-    String domain;
+    public String domain;
     @SerializedName("author")
-    String author;
+    public String author;
     @SerializedName("name")
-    String name;
+    public String name;
     @SerializedName("thumbnail")
-    String thumbnail;
+    public String thumbnail;
     @SerializedName("title")
-    String title;
+    public String title;
     @SerializedName("created_utc")
-    long createdAt;
+    public long createdAt;
     @SerializedName("num_comments")
-    int numberOfComments;
+    public int numberOfComments;
     @SerializedName("subreddit")
-    String subreddit;
+    public String subreddit;
     @SerializedName("selftext_html")
-    String selfTextHtml;
+    public String selfTextHtml;
     @SerializedName("url")
-    String url;
+    public String url;
     @SerializedName("preview")
-    Preview preview;
+    public Preview preview;
 }

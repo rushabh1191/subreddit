@@ -11,5 +11,5 @@ import java.util.ArrayList;
 
 public class SubredditData implements Serializable{
     @SerializedName("children")
-    ArrayList<Children> childrenArrayList;
+    public ArrayList<Children> childrenArrayList;
 }

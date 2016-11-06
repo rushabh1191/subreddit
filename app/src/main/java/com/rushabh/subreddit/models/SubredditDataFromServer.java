@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class SubredditDataFromServer implements Serializable{
     @SerializedName("kind")
-    String kind;
+    public String kind;
     @SerializedName("data")
-    SubredditData data;
+    public SubredditData data;
 }

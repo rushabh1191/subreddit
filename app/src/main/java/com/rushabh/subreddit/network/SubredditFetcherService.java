@@ -1,4 +1,4 @@
-package com.rushabh.subreddit;
+package com.rushabh.subreddit.network;
 
 import com.rushabh.subreddit.models.SubredditDataFromServer;
 
@@ -11,6 +11,6 @@ import retrofit2.http.Path;
  */
 
 public interface SubredditFetcherService {
-    @GET("/{topic}/new.json")
+    @GET("/r/{topic}/new.json")
     Call<SubredditDataFromServer> fetchSubreddit(@Path("topic") String topic);
 }

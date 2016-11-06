@@ -12,5 +12,5 @@ public class Children implements Serializable{
     @SerializedName("kind")
     String t3;
     @SerializedName("data")
-    SubredditPost post;
+    public SubredditPost post;
 }
