@@ -1,5 +1,6 @@
 package com.rushabh.subreddit;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     SubredditFetcher fetcher;
     String topic;
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,7 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
         postListView.setLayoutManager(new LinearLayoutManager(this));
         postListView.setAdapter(adapter);
 
+
     }
 
     public static Intent getListIntent(ArrayList<Children> listOfPost, Context context, String topic) {
@@ -65,8 +69,22 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(dialog!=null){
+            dialog.dismiss();
+        }
+
+
+    }
+
+    @Override
     public void commentsFetched(ArrayList<Children> comments, Children post) {
         post.post.isMainPost = true;
+        if(dialog!=null){
+            dialog.dismiss();
+        }
+
         comments.add(0, post);
         Intent intent = PostDisplayActivity.getDetailIntent(comments, topic, this);
         startActivity(intent);
@@ -79,8 +97,8 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
 
     @Override
     public void onClick(View view) {
-
         PostViewHolder holder = (PostViewHolder) view.getTag();
         fetcher.fetchSubredditComments(topic, holder.id);
+        dialog=ProgressDialog.show(this,"","Fetching ....");
     }
 }

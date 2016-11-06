@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
 
     ProgressDialog progressDialog;
 
+    static String ENTERED_VALUE="entered_value";
+
     String topic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
 
         ButterKnife.bind(this);
         fetcher=new SubredditFetcher(this,this);
+        if(savedInstanceState!=null){
+            String searchQuery=savedInstanceState.getString(ENTERED_VALUE);
+            autoCompleteTextView.setText(searchQuery);
+        }
     }
 
     @OnClick(R.id.btn_search)
@@ -66,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+        }
+        outState.putString(ENTERED_VALUE,autoCompleteTextView.getText().toString());
+    }
 
     @Override
     public void failed() {
