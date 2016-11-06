@@ -34,4 +34,11 @@ public class SubredditPost implements Serializable {
     public String url;
     @SerializedName("preview")
     public Preview preview;
+
+    @SerializedName("body")
+    public String body;
+    @SerializedName("body_html")
+    public String body_html;
+
+    public boolean isMainPost = false;
 }

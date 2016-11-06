@@ -2,11 +2,9 @@ package com.rushabh.subreddit;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +13,6 @@ import com.rushabh.subreddit.models.SubredditPost;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,16 +27,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostViewHolder> {
     ArrayList<Children> listOfPosts;
     LayoutInflater inflater;
 
-    public PostsAdapter(Context context, ArrayList<Children> listOfPosts) {
+    View.OnClickListener postClickListener;
+
+    public PostsAdapter(Context context, ArrayList<Children> listOfPosts, View.OnClickListener
+            onClickListener) {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.listOfPosts = listOfPosts;
+        this.postClickListener=onClickListener;
+
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.crow_posts, parent, false);
         PostViewHolder postViewHolder = new PostViewHolder(view);
+        view.setOnClickListener(postClickListener);
+        view.setTag(postViewHolder);
         return postViewHolder;
     }
 
@@ -47,8 +51,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostViewHolder> {
     public void onBindViewHolder(PostViewHolder holder, int position) {
         SubredditPost post=listOfPosts.get(position).post;
         holder.tvPostTitle.setText(post.title);
-
-        Log.d("beta","po "+post.createdAt);
+        holder.id=post.id;
         holder.tvTime.setText(Utility.getTime(post.createdAt*1000));
         Picasso.with(context).load(post.thumbnail).into(holder.ivThumbImage);
     }
@@ -71,6 +74,8 @@ class PostViewHolder extends RecyclerView.ViewHolder {
     ImageView ivThumbImage;
     @BindView(R.id.tv_time)
     TextView tvTime;
+
+    String id;
 
     public PostViewHolder(View itemView) {
         super(itemView);

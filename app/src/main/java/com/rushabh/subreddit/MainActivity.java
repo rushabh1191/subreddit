@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
     SubredditFetcher fetcher;
 
     ProgressDialog progressDialog;
+
+    String topic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
     @OnClick(R.id.btn_search)
     void search(){
 
-        String topic=autoCompleteTextView.getText().toString().trim();
+        topic=autoCompleteTextView.getText().toString().trim();
         if(TextUtils.isEmpty(topic)){
             autoCompleteTextView.setError("Please enter topic");
         }
@@ -53,8 +55,15 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
     @Override
     public void postFetched(ArrayList<Children> subredditPosts) {
         progressDialog.dismiss();
-        Intent intent=PostListActivity.getListIntent(subredditPosts,this);
+        Intent intent=PostListActivity.getListIntent(subredditPosts,this,topic);
         startActivity(intent);
+    }
+
+    @Override
+    public void commentsFetched(ArrayList<Children> comments, Children post) {
+        post.post.isMainPost=true;
+        comments.add(0,post);
+
     }
 
 

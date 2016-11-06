@@ -29,17 +29,18 @@ public class SubredditFetcher {
 
 
     private SubredditFetcherService fetcherService;
-    public SubredditFetcher(Context context,onPostsFetchListener listener){
-        this.context=context;
-        postsFetchListener=listener;
+
+    public SubredditFetcher(Context context, onPostsFetchListener listener) {
+        this.context = context;
+        postsFetchListener = listener;
         Retrofit retrofit = RetrofitHelper.getRetrofitInstance();
-        fetcherService=retrofit.create(SubredditFetcherService.class);
+        fetcherService = retrofit.create(SubredditFetcherService.class);
     }
 
 
-    public void fetchSubreddit(String topic){
+    public void fetchSubreddit(String topic) {
 
-        Call<SubredditDataFromServer> subredditDataFromServerCall=fetcherService.
+        Call<SubredditDataFromServer> subredditDataFromServerCall = fetcherService.
                 fetchSubreddit(topic);
 
         subredditDataFromServerCall.enqueue(new Callback<SubredditDataFromServer>() {
@@ -47,7 +48,7 @@ public class SubredditFetcher {
             public void onResponse(Call<SubredditDataFromServer> call,
                                    Response<SubredditDataFromServer> response) {
 
-                if(postsFetchListener!=null){
+                if (postsFetchListener != null) {
                     postsFetchListener.postFetched(response.body().data.childrenArrayList);
                 }
             }
@@ -61,13 +62,36 @@ public class SubredditFetcher {
 
     }
 
-    public void fetchSubredditComments(String topic){
+    public void fetchSubredditComments(String topic, String id) {
+        Call<ArrayList<SubredditDataFromServer>> commentsFetcher = fetcherService.
+                fetchSubredditComments(topic, id);
+        commentsFetcher.enqueue(new Callback<ArrayList<SubredditDataFromServer>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SubredditDataFromServer>> call,
+                                   Response<ArrayList<SubredditDataFromServer>> response) {
+
+                if (postsFetchListener != null) {
+                    postsFetchListener.commentsFetched(response.body().get(1).data.childrenArrayList,
+                            response.body().get(0).
+                                    data.childrenArrayList.get(0));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SubredditDataFromServer>> call, Throwable t) {
+
+            }
+        });
 
     }
 
 
-    public interface onPostsFetchListener{
+    public interface onPostsFetchListener {
         void postFetched(ArrayList<Children> subredditPosts);
+
+        void commentsFetched(ArrayList<Children> comments, Children post);
+
         void failed();
     }
 }
