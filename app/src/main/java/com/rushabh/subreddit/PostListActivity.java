@@ -3,12 +3,10 @@ package com.rushabh.subreddit;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.rushabh.subreddit.models.Children;
@@ -18,7 +16,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PostListActivity extends AppCompatActivity implements SubredditFetcher.onPostsFetchListener, View.OnClickListener {
+public class PostListActivity extends AppCompatActivity implements SubredditFetcher.
+        onPostsFetchListener, View.OnClickListener {
 
     private static final String LIST_OF_POSTS = "list_of_posts";
     private static final String TOPIC = "topic";
@@ -102,8 +101,9 @@ public class PostListActivity extends AppCompatActivity implements SubredditFetc
     }
 
     @Override
-    public void failed() {
-
+    public void failed(String message) {
+        dialog.dismiss();
+        new ConfirmationWindow(this,"Error",message,"OK","");
     }
 
     @Override

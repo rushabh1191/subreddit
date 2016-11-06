@@ -1,11 +1,9 @@
 package com.rushabh.subreddit;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.rushabh.subreddit.models.Children;
 import com.rushabh.subreddit.models.SubredditDataFromServer;
-import com.rushabh.subreddit.models.SubredditPost;
 import com.rushabh.subreddit.network.RetrofitHelper;
 import com.rushabh.subreddit.network.SubredditFetcherService;
 
@@ -48,14 +46,26 @@ public class SubredditFetcher {
             public void onResponse(Call<SubredditDataFromServer> call,
                                    Response<SubredditDataFromServer> response) {
 
-                if (postsFetchListener != null) {
-                    postsFetchListener.postFetched(response.body().data.childrenArrayList);
+                try{
+                    if(response.code()==200) {
+                        if (postsFetchListener != null) {
+                            postsFetchListener.postFetched(response.body().data.childrenArrayList);
+                        }
+                    }
+                    else{
+                        postsFetchListener.failed("Nothing found");
+                    }
                 }
+                catch (Exception e){
+
+                    postsFetchListener.failed("Something went wrong");
+                }
+
             }
 
             @Override
             public void onFailure(Call<SubredditDataFromServer> call, Throwable t) {
-
+                postsFetchListener.failed("Network Error");
             }
         });
 
@@ -70,17 +80,30 @@ public class SubredditFetcher {
             public void onResponse(Call<ArrayList<SubredditDataFromServer>> call,
                                    Response<ArrayList<SubredditDataFromServer>> response) {
 
-                if (postsFetchListener != null) {
-                    postsFetchListener.commentsFetched(response.body().get(1).data.childrenArrayList,
-                            response.body().get(0).
-                                    data.childrenArrayList.get(0));
+                try {
+
+
+                    if (response.code() == 200) {
+                        if (postsFetchListener != null) {
+                            postsFetchListener.commentsFetched(response.body().get(1).data.childrenArrayList,
+                                    response.body().get(0).
+                                            data.childrenArrayList.get(0));
+                        }
+                    } else {
+                        postsFetchListener.failed("Nothing found");
+                    }
+                }catch (Exception e){
+                    postsFetchListener.failed("Something went wrong");
                 }
+
 
             }
 
             @Override
             public void onFailure(Call<ArrayList<SubredditDataFromServer>> call, Throwable t) {
-
+                if(postsFetchListener!=null){
+                    postsFetchListener.failed("Network error");
+                }
             }
         });
 
@@ -92,6 +115,6 @@ public class SubredditFetcher {
 
         void commentsFetched(ArrayList<Children> comments, Children post);
 
-        void failed();
+        void failed(String message);
     }
 }

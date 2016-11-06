@@ -3,7 +3,7 @@ package com.rushabh.subreddit;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +125,6 @@ public class PostDetailsAdapter extends RecyclerView.Adapter {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context,
                         LinearLayoutManager.HORIZONTAL, false));
             } catch (Exception e) {
-                Log.d("beta", "e " + e.getMessage());
                 recyclerView.setVisibility(View.GONE);
             }
 
@@ -138,7 +137,13 @@ public class PostDetailsAdapter extends RecyclerView.Adapter {
         subredditView.tvTime.setText(Utility.getTime(post.createdAt * 1000));
         subredditView.tvAuthor.setText(post.author);
 
-        Picasso.with(context).load(post.thumbnail).into(subredditView.ivThumbImage);
+        if(!TextUtils.isEmpty(post.thumbnail)){
+            Picasso.with(context).load(post.thumbnail).into(subredditView.ivThumbImage);
+        }
+        else{
+            subredditView.ivThumbImage.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 
@@ -176,7 +181,6 @@ class PostImageAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("beta", "CREATE");
         View view = inflater.inflate(R.layout.crow_image, parent, false);
         ImageViewHolder holder = new ImageViewHolder(view);
         return holder;
