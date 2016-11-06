@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.rushabh.subreddit.models.Children;
 import com.rushabh.subreddit.models.SearchHistory;
@@ -59,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements SubredditFetcher.
         autoCompleteTextView.setThreshold(1);
 
 
+        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                findViewById(R.id.btn_search).performClick();
+                return true;
+            }
+        });
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
